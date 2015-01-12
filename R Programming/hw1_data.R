@@ -1,5 +1,5 @@
 #initial
-data <- read.csv(hw1_data.csv)
+data <- read.csv("DataScientist-RPro/hw1_data.csv")
 
 #Question 11
 names(data)
