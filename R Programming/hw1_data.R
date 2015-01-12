@@ -29,5 +29,11 @@ dataSolarR <- data$Solar.R
 dataSolarR_sub <- dataSolarR[dataOzone > 31 & dataTemp > 90]
 mean(dataSolarR_sub[!is.na(dataSolarR_sub])
 
+#Question 19
+dataMonth <- data$Month
+dataTemp[dataMonth == 6]
+
+#Question 20
+max(dataOzone[dataMonth == 5], na.rm = TRUE)
 
 
