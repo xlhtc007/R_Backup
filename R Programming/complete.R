@@ -12,7 +12,7 @@ complete <- function(directory, id = 1:332) {
         datanitrate <- data$nitrate
         datanitratesub <- datanitrate[!is.na(datasulfate)]
         datanitratesubrs <- datanitratesub[!is.na(datanitratesub)]
-        rs <- rbind(rs,c(i,length(datanitratesubrs)))
+        rs <- rbind(rs,c(id=i,nobs=length(datanitratesubrs)))
     }
-    rs
+    as.list(rs)
 }
