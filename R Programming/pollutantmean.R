@@ -1,10 +1,10 @@
 pollutantmean <- function(directory, pollutant, id = 1:332) {
-    #构造文件路径的集合
+    #initialize the file directory set
     base <- 1000
     baseid <- base + id
     filenames <- substr(paste(as.character(baseid),".csv",sep=""),2,8)
     filedirs <- paste(directory,filenames,sep="/")
-    #循环各个文件组装结果
+    #loop the file set and form the data 
     datapollutantsum <- c()
     for(file in filedirs){
         data <- read.csv(file)
