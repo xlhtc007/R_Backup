@@ -14,7 +14,7 @@ best <- function(state, outcome) {
     dataSub <- data[validState,]
     i <- c(11,17,23)[validOutcome]
     validRate <- dataSub[i] != "Not Available"
-    rsIndex <- dataSub[i] == min(dataSub[i][validRate],na.rm = TRUE)
+    rsIndex <- dataSub[i] == min(as.numeric(dataSub[i][validRate]),na.rm = TRUE)
     rs <- sort(dataSub["Hospital.Name"][rsIndex])
     rs[[1]]
 }
