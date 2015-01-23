@@ -7,29 +7,36 @@ rankall <- function(outcome, num = "best") {
         stop("invalid outcome")
     }
     ## For each state, find the hospital of the given rank
+    i <- c(11,17,23)[validOutcome]
     states <- unique(data$State)
-    values <- c()
+    dataSub <- data[,c(2,i)]
+    values <- NULL
+    value <- c()
+    index <- c()
     for(state in states){
         validState <- data$State == state
-        dataSub <- data[validState,]
-        i <- c(11,17,23)[validOutcome]
-        outcomeValue <- as.numeric(dataSub[i][dataSub[i] != "Not Available"])
-        hospitalValue <- dataSub["Hospital.Name"][dataSub[i] != "Not Available"]
+        
+        dataRs <- dataSub[validState,]
+        dataRs <- dataRs[dataRs[,2] != "Not Available",]
+        dataRs <- dataRs[order(dataRs[,1]),]
+        dataRs <- dataRs[order(dataRs[,2]),]
         
         if(num == "best"){
-            num <- 1
+            index <- 1
         }else if(num == "worst"){
-            num <- length(outcomeValue)
+            index <- nrow(dataRs)
+        }else{
+            index <- num
         }
         
-        if(num < 0 | num > length(outcomeValue)){
+        if(index < 0 | index > nrow(dataRs)){
             value <- NA
         }else{
-            value <- hospitalValue[rank(outcomeValue) == num]
+            value <- dataRs[index,1]
         }
-        
-        values <- rbind(values,list(hospital = value,state = state))
+        values <- rbind(values,c(hospital = value,state = state))
     }
     ## Return a data frame with the hospital names and the (abbreviated) state name
+    values <- values[order(values[,2]),]
     as.data.frame(values)
 }
