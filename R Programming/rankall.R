@@ -19,7 +19,7 @@ rankall <- function(outcome, num = "best") {
         dataRs <- dataSub[validState,]
         dataRs <- dataRs[dataRs[,2] != "Not Available",]
         dataRs <- dataRs[order(dataRs[,1]),]
-        dataRs <- dataRs[order(dataRs[,2]),]
+        dataRs <- dataRs[order(as.numeric(dataRs[,2])),]
         
         if(num == "best"){
             index <- 1

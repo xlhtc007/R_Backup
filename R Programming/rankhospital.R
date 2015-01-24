@@ -33,7 +33,7 @@ rankhospital <- function(state, outcome, num = "best") {
     dataSub <- data[validState,][,c(2,i)]
     dataSub <- dataSub[dataSub[,2] != "Not Available",]
     dataSub <- dataSub[order(dataSub[,1]),]
-    dataSub <- dataSub[order(dataSub[,2]),]
+    dataSub <- dataSub[order(as.numeric(dataSub[,2])),]
     
     if(num == "best"){
         num <- 1
