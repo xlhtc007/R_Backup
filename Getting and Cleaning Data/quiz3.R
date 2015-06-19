@@ -185,10 +185,34 @@ summarize(years, pm25 = mean(pm25, na.rm = TRUE),
           no2 = median(no2tmean2, na.rm = TRUE))
 
 
-
-
-
-
+# Peer review data
+if(!file.exists("./data")){dir.create("./data")}
+fileUrl1 = "https://dl.dropboxusercontent.com/u/7710864/data/reviews-apr29.csv"
+fileUrl2 = "https://dl.dropboxusercontent.com/u/7710864/data/solutions-apr29.csv"
+download.file(fileUrl1,destfile="./data/reviews.csv",method="curl")
+download.file(fileUrl2,destfile="./data/solutions.csv",method="curl")
+reviews = read.csv("./data/reviews.csv"); solutions <- read.csv("./data/solutions.csv")
+head(reviews,2)
+head(solutions,2)
+names(reviews)
+names(solutions)
+# Merging data - merge()
+mergedData = merge(reviews,solutions,by.x="solution_id",by.y="id",all=TRUE)
+head(mergedData)
+# Default - merge all common column names
+intersect(names(solutions),names(reviews))
+mergedData2 = merge(reviews,solutions,all=TRUE)
+head(mergedData2)
+# Using join in the plyr package
+df1 = data.frame(id=sample(1:10),x=rnorm(10))
+df2 = data.frame(id=sample(1:10),y=rnorm(10))
+arrange(join(df1,df2),id)
+# If you have multiple data frames
+df1 = data.frame(id=sample(1:10),x=rnorm(10))
+df2 = data.frame(id=sample(1:10),y=rnorm(10))
+df3 = data.frame(id=sample(1:10),z=rnorm(10))
+dfList = list(df1,df2,df3)
+join_all(dfList)
 
 # Question 1
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
@@ -206,6 +230,38 @@ library(jpeg)
 jeffpic <- readJPEG("./data/jeff.jpg",native=TRUE)
 quantile(jeffpic,probs=c(0.3,0.8))
 
+# Question 3
+fileUrl1 <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FGDP.csv "
+fileUrl2 <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FEDSTATS_Country.csv "
+download.file(fileUrl1, destfile="./data/datagdp.csv",method="curl")
+download.file(fileUrl2, destfile="./data/dataedu.csv",method="curl")
+gdpsraw <- read.csv("./data/datagdp.csv",stringsAsFactors=FALSE, header=FALSE)
+gdps <- gdpsraw[6:195,c(1,2,4,5)]
+names(gdps) <- c("CountryCode","Ranking","Economy","gdp")
+gdps$Ranking <- as.integer(gdps$Ranking)
+edus <- read.csv("./data/dataedu.csv")
+head(gdps,10)
+head(edus,10)
+#mergedcsv = merge(gdps,edus,by.x="countrycode",by.y="CountryCode",all=TRUE)
+joincsv <- arrange(join(gdps,edus),desc(Ranking))
+nrow(joincsv)
+joincsv[13,]
+
+
+# Question 4
+hiOECD <- joincsv[joincsv$Income.Group == "High income: OECD",]
+hinonOECD <- joincsv[joincsv$Income.Group == "High income: nonOECD",]
+meanhi <- mean(hiOECD$Ranking, na.rm = TRUE)
+meanhinon <- mean(hinonOECD$Ranking, na.rm = TRUE)
+meanhi
+meanhinon
+
+# Question 5
+quantile(joincsv$Ranking,probs=c(0.2,0.4,0.6,0.8))
+# Make table
+table(joincsv$Ranking,useNA="ifany")
+jointable <- table(joincsv$Ranking,joincsv$Income.Group)
+names(jointable)
 
 
 
