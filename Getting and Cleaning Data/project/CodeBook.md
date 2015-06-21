@@ -1,7 +1,7 @@
 ##Getting and Cleaning Data project
 ===================================
 
-This is the CodeBook for run_analysis.R ,part of project in the COURSERA Course " Getting and Cleaning Data " offered by John Hopkins university.
+This is the CodeBook for run_analysis.R 
 
 ###Script
 =======================
@@ -20,16 +20,6 @@ This file run_analysis.R contains the script for carrying out the tasks for clea
 - Subject - subject id in the experiment 
 - Label - descriptive label of the activity 
 - Types of activity(Levels) - LAYING SITTING STANDING WALKING WALKING_DOWNSTAIRS WALKING_UPSTAIRS
-
-### The whole process here can be categorised into sub-processes.
-
-**-Reading data **
-
-**-Cleaning data **
-
-**-processing data **
-
-**-Data output(write into output files)**
 
 
 ###Tidy data set
@@ -89,7 +79,3 @@ rbind()
 
 -The second output data is written into a csv file cleandata_avgs.csv and cleandata_avgs.txt
 
-
-**Reference:**
-
-*[1] Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012 *
