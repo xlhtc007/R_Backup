@@ -72,3 +72,31 @@ boxplot(return_matrix[,"VBLTX"], return_matrix[,"FMAGX"], return_matrix[,"SBUX"]
 
 # Do the same thing using the PerformanceAnalytics function chart.Boxplot
 chart.Boxplot(all_returns)
+
+summary(return_matrix)
+
+# Compute descriptive statistics by column using the base R function apply()
+args(apply)
+apply(return_matrix, 2, mean)
+apply(return_matrix, 2, var)
+apply(return_matrix, 2, sd)
+apply(return_matrix, 2, skewness)
+apply(return_matrix, 2, kurtosis)
+# A nice PerformanceAnalytics function that computes all of the relevant descriptive statistics is table.Stats
+table.Stats(all_returns)
+
+# Annualized continuously compounded mean 
+12*apply(return_matrix, 2, mean)
+# Annualized simple mean
+exp(12*apply(return_matrix, 2, mean)) - 1
+
+# Annualized standard deviation values
+sqrt(12)*apply(return_matrix, 2, sd)
+
+# Display all possible pair-wise scatter plots
+pairs(return_matrix, pch = 16, col = "slateblue1")
+
+# Compute 3 x 3 covariance and correlation matrices
+var(return_matrix)
+cor(return_matrix)
+
