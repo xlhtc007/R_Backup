@@ -1,3 +1,8 @@
+# Load relevant packages
+library(zoo);
+library(tseries);
+library(PerformanceAnalytics);
+
 VBLTX_prices <- get.hist.quote(instrument="vbltx", start="2005-09-01", end="2010-09-30", quote="AdjClose",provider="yahoo", origin="1970-01-01",compression="m", retclass="zoo", quiet = TRUE)
 FMAGX_prices <- get.hist.quote(instrument="fmagx", start="2005-09-01", end="2010-09-30", quote="AdjClose",provider="yahoo", origin="1970-01-01",compression="m", retclass="zoo", quiet = TRUE)
 SBUX_prices <- get.hist.quote(instrument="sbux", start="2005-09-01",end="2010-09-30", quote="AdjClose",provider="yahoo", origin="1970-01-01",compression="m", retclass="zoo", quiet = TRUE)
@@ -45,3 +50,27 @@ se_rhohat <- (1-rhohat_vals^2)/sqrt(n_obs)
 se_rhohat
 
 t.test(all_returns[,"VBLTX"])
+
+# Test the correlation between VBLTX,FMAGX
+cor.test(x = all_returns[,"VBLTX"], y = all_returns[,"FMAGX"])
+
+# Test the normality of the returns of VBLTX
+jarque.bera.test(all_returns[,"VBLTX"])
+
+library("boot")
+# Function for bootstrapping sample mean: 
+mean_boot <- function(x, idx) {
+    ans <- mean(x[idx])
+    ans 
+} 
+# Construct VBLTX_mean_boot:
+VBLTX_mean_boot <- boot(return_matrix[,"VBLTX"], statistic = mean_boot, R = 999)
+    
+# Print the class of VBLTX_mean_boot
+class(VBLTX_mean_boot)
+
+# Print VBLTX_mean_boot
+VBLTX_mean_boot
+
+# Plot bootstrap distribution and qq-plot against normal
+plot(VBLTX_mean_boot)
