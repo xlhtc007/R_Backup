@@ -1,6 +1,6 @@
 # Load the relevant packages
 library("zoo")
-
+library("quadprog")
 # Load the working environment
 load(url("http://s3.amazonaws.com/assets.datacamp.com/course/compfin/lab9.RData"))
 
@@ -38,3 +38,70 @@ cor_mat_month
 # Pairwise scatterplots
 pairs(coredata(returns_df), col = "blue", pch = 16)
 
+# Calculate the global minimum variance portfolio
+global_min_var_portfolio = globalMin.portfolio(er = mu_hat_month, cov.mat = cov_mat_month, short = TRUE)
+
+global_min_var_portfolio
+
+# Plot the portfolio weights of our four stocks
+plot(global_min_var_portfolio)
+
+# set restriction matrices
+D_matrix <- 2* cov_mat_month
+D_matrix
+d_vector <- rep(0,4)
+d_vector
+A_matrix <- cbind(rep(1,4),diag(4))
+A_matrix
+b_vector <- c(1,rep(0,4))
+b_vector
+
+# use solve.QP to minimize portfolio variance
+quad_prog <- solve.QP(Dmat = D_matrix, dvec = d_vector, Amat = A_matrix, bvec = b_vector)
+    
+quad_prog
+
+# The global minimum variance portfolio
+global_min_var_portfolio <- globalMin.portfolio(er = mu_hat_month, cov.mat = cov_mat_month, short = FALSE)
+    
+global_min_var_portfolio 
+
+# highest average return
+mu_target <- max(mu_hat_month)
+
+# short sales allowed
+efficient_porfolio_short <- efficient.portfolio(er = mu_hat_month, cov.mat = cov_mat_month, target.return = mu_target, short = TRUE )
+
+efficient_porfolio_short
+plot(efficient_porfolio_short)
+
+# no short sales allowed
+efficient_porfolio_no_short <- efficient.portfolio(er = mu_hat_month, cov.mat = cov_mat_month, target.return = mu_target, short = FALSE )
+
+efficient_porfolio_no_short
+plot(efficient_porfolio_no_short)
+
+# The efficient frontier of risky assets 
+efficient_frontier <- efficient.frontier(er = mu_hat_month, cov.mat = cov_mat_month, alpha.min = -1, alpha.max = 1)
+
+summary(efficient_frontier)
+
+# The plot
+plot(efficient_frontier, plot.assets = TRUE, col = "blue", lwd = 2 )
+
+# risk free rate
+t_bill_rate <- 0.005 
+
+# Tangency portfolio short sales allowed
+tangency_portfolio_short <- tangency.portfolio(er = mu_hat_month, cov.mat = cov_mat_month, risk.free = t_bill_rate, shorts = TRUE)
+
+summary(tangency_portfolio_short)
+#plot
+plot(tangency_portfolio_short)
+
+# Tangency portfolio short sales not allowed
+tangency_portfolio_no_short <- tangency.portfolio(er = mu_hat_month, cov.mat = cov_mat_month, risk.free = t_bill_rate, shorts = FALSE)
+
+summary(tangency_portfolio_no_short)
+#plot
+plot(tangency_portfolio_no_short)
